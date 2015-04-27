@@ -1,0 +1,5 @@
+*.swp
+bower/*
+images/*
+cards-*.js
+cards-*.xlsx
