@@ -93,6 +93,7 @@ def runit():
   for i in range(len(ws)):
     worksheet.set_column(i, i, ws[i])
 
+  worksheet.autofilter('A1:Y1')
 
   workbook.close()
 
