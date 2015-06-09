@@ -21,12 +21,17 @@ for row in ws.rows:
     stat[source][kv[level]] += row[5].value
     stat[source]["t" + kv[level]] += row[1].value
 
+alldust = 0
 for it in [u'經典', u'GVG']:
   print('====================================')
   foo = stat[it]
+  alldust = alldust + foo['need_dust']
   print('%s卡 缺: %s/%s(%s%%) 張 %s/%s(%s%%) 塵' % (it, foo['need'], foo['total'], foo['need'] * 100 / foo['total'], foo['need_dust'], foo['total_dust'], foo['need_dust'] * 100 / foo['total_dust']))
   print('最多 %s 包' % (foo['need_dust'] / 40))
   print('傳說 %s/%s 張 - 史詩 %s/%s 張 - 精良 %s/%s 張 - 普通 %s/%s 張' % (foo['lv1600'], foo['tlv1600'], foo['lv400'], foo['tlv400'], foo['lv100'], foo['tlv100'], foo['lv40'], foo['tlv40']))
-  
+
+havedust = 6020 + 1550
+print("--------------------------------------")
+print("DUST ALL: %s / HAVE: %s / NEED: %s" % (alldust, havedust, alldust - havedust))
 
 
