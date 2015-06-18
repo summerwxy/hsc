@@ -30,7 +30,7 @@ for it in [u'經典', u'GVG']:
   print('最多 %s 包' % (foo['need_dust'] / 40))
   print('傳說 %s/%s 張 - 史詩 %s/%s 張 - 精良 %s/%s 張 - 普通 %s/%s 張' % (foo['lv1600'], foo['tlv1600'], foo['lv400'], foo['tlv400'], foo['lv100'], foo['tlv100'], foo['lv40'], foo['tlv40']))
 
-havedust = 6620 + 1550
+havedust = 6765 + 1550
 print("--------------------------------------")
 print("DUST ALL: %s / HAVE: %s / NEED: %s" % (alldust, havedust, alldust - havedust))
 
