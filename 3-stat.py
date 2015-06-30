@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from openpyxl import load_workbook
+from colorama import init
+
+init()
 
 wb = load_workbook(filename='cards-result.xlsx')
 ws = wb['Sheet1']
@@ -23,14 +26,14 @@ for row in ws.rows:
 
 alldust = 0
 for it in [u'經典', u'GVG']:
-  print('====================================')
+  print('\033[1;31m====================================\033[m')
   foo = stat[it]
   alldust = alldust + foo['need_dust']
-  print('%s卡 缺: %s/%s(%s%%) 張 %s/%s(%s%%) 塵' % (it, foo['need'], foo['total'], foo['need'] * 100 / foo['total'], foo['need_dust'], foo['total_dust'], foo['need_dust'] * 100 / foo['total_dust']))
+  print('%s卡 缺: %s/%s(%s%%) 張 %s/%s(%s%%) 塵' % (it, foo['need'], foo['total'], round(foo['need'] * 100 / foo['total'], 2), foo['need_dust'], foo['total_dust'], round(foo['need_dust'] * 100 / foo['total_dust'], 2)))
   print('最多 %s 包' % (foo['need_dust'] / 40))
-  print('傳說 %s/%s 張 - 史詩 %s/%s 張 - 精良 %s/%s 張 - 普通 %s/%s 張' % (foo['lv1600'], foo['tlv1600'], foo['lv400'], foo['tlv400'], foo['lv100'], foo['tlv100'], foo['lv40'], foo['tlv40']))
+  print('\033[0;33m傳說 %s/%s 張\033[m - \033[1;35m史詩 %s/%s 張\033[m - \033[1;34m精良 %s/%s 張\033[m - \033[1;37m普通 %s/%s 張\033[m' % (foo['lv1600'], foo['tlv1600'], foo['lv400'], foo['tlv400'], foo['lv100'], foo['tlv100'], foo['lv40'], foo['tlv40']))
 
-havedust = 6880 + 1550
+havedust = 7085 + 1550
 print("--------------------------------------")
 print("DUST ALL: %s / HAVE: %s / NEED: %s" % (alldust, havedust, alldust - havedust))
 
