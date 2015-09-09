@@ -30,11 +30,26 @@ for it in [u'經典', u'GVG', u'TGT']:
   foo = stat[it]
   alldust = alldust + foo['need_dust']
   print('%s卡 缺: %s/%s(%s%%) 張 %s/%s(%s%%) 塵' % (it, foo['need'], foo['total'], round(foo['need'] * 100 / foo['total'], 2), foo['need_dust'], foo['total_dust'], round(foo['need_dust'] * 100 / foo['total_dust'], 2)))
-  print('最多 %s 包' % (foo['need_dust'] / 40))
-  print('\033[0;33m傳說 %s/%s 張\033[m - \033[1;35m史詩 %s/%s 張\033[m - \033[1;34m精良 %s/%s 張\033[m - \033[1;37m普通 %s/%s 張\033[m' % (foo['lv1600'], foo['tlv1600'], foo['lv400'], foo['tlv400'], foo['lv100'], foo['tlv100'], foo['lv40'], foo['tlv40']))
+  #print('最多 %s 包' % (foo['need_dust'] / 40))
+  print('\033[0;33m傳說 %s/%s 張\033[m - \033[1;35m史詩 %s/%s 張\033[m - \033[1;36m精良 %s/%s 張\033[m - \033[1;37m普通 %s/%s 張\033[m' % (foo['lv1600'], foo['tlv1600'], foo['lv400'], foo['tlv400'], foo['lv100'], foo['tlv100'], foo['lv40'], foo['tlv40']))
 
-havedust = 8085 + 1570
+havedust = 8300 + 1570
 print("--------------------------------------")
 print("DUST ALL: %s / HAVE: %s / NEED: %s" % (alldust, havedust, alldust - havedust))
 
 
+"""
+        var ValCN = DustPerCommon;
+        var ValCD = 50 * 0.02 + 5 * 0.98;
+        var ValRN = DustPerRare;
+        var ValRD = 100 * 0.05 + 20 * 0.95;
+        var ValEN = DustPerEpic;
+        var ValED = 400 * 0.05 + 100 * 0.95;
+        var ValLN = DustPerLegendary;
+        var ValLD = 1600 * 0.05 + 400 * 0.95;
+    var ChanceLegendary = 0.0119;
+    var ChanceEpic = 0.0476;
+    var ChanceRare = 0.238;
+    var ChanceCommon = 0.70254;
+    var ChanceGold = 0.05;
+"""
