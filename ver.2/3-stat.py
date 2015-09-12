@@ -193,6 +193,7 @@ def simOpenAll_3(data, times):
 # open pack until get all card: common -> rare -> epic -> legendary by rate
 def simOpenAll_4(data, times):
   avg = []
+  getallcard = []
   for i in range(times):
     simData = deepcopy(data)
     opens = 0
