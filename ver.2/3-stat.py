@@ -7,7 +7,6 @@ from random import random
 from copy import deepcopy
 
 PACK_NAME = {'cls': u'經典', 'gvg': u'GVG', 'tgt': u'TGT'}
-havedust = 8300 + 1570
 
 # http://www.carddust.com/
 chanceLegendary = 0.0119;
@@ -17,7 +16,7 @@ chanceCommon = 0.70254;
 
 
 
-def readExcel():
+def readExcel(havedust):
   data = {}
   wb = load_workbook(filename='cards-result.xlsx')
   ws = wb['Sheet1']
@@ -48,10 +47,10 @@ def printData(data):
     foo = data[it]
     alldust = alldust + foo['need_dust']
     print('%s: %s/%s(%s%%) Cards | %s/%s(%s%%) Dusts' % (it, foo['need'], foo['total'], round(foo['need'] * 100 / foo['total'], 2), foo['need_dust'], foo['total_dust'], round(foo['need_dust'] * 100 / foo['total_dust'], 2)))
-    print('\033[0;33mLegendary %s/%s\033[m | \033[1;35mEpic %s/%s\033[m | \033[1;36mRare %s/%s\033[m | \033[1;37mCommon %s/%s\033[m' % (foo['legendary'], foo['tlegendary'], foo['epic'], foo['tepic'], foo['rare'], foo['trare'], foo['common'], foo['tcommon']))
+    print('\033[0;33mLegendary %s/%s\033[m | \033[1;35mEpic %s/%s\033[m | \033[1;36mRare %s/%s(%s)\033[m | \033[1;37mCommon %s/%s(%s)\033[m' % (foo['legendary'], foo['tlegendary'], foo['epic'], foo['tepic'], foo['rare'], foo['trare'], round(foo['rare'] * 100 / foo['trare'], 2), foo['common'], foo['tcommon'], round(foo['common'] * 100 / foo['tcommon'], 2)))
 
   print('\033[1;31m-------------------------------------------\033[m')
-  print("DUST ALL: %s / HAVE: %s / NEED: %s" % (alldust, havedust, alldust - havedust))
+  print("DUST ALL: %s / HAVE: %s / NEED: %s" % (alldust, data['havedust'], alldust - data['havedust']))
   print('\033[1;31m-------------------------------------------\033[m')
 
 
@@ -193,36 +192,49 @@ def simOpenAll_3(data, times):
 # open pack until get all card: common -> rare -> epic -> legendary by rate
 def simOpenAll_4(data, times):
   avg = []
-  getallcard = []
   for i in range(times):
     simData = deepcopy(data)
     opens = 0
+    sordBy = ''
     while simData['havedust'] < sum([it['need_dust'] for it in simData.values() if type(it) == dict]):
       if sum([it['common'] for it in simData.values() if type(it) == dict]):
-        foo = sorted([it for it in simData.values() if type(it) == dict], key=lambda d: d['common'] / d['tcommon'])[-1]
-        simData = openOnePack(simData, foo['key'])
+        sordBy = 'common'
       elif sum([it['rare'] for it in simData.values() if type(it) == dict]):
-        foo = sorted([it for it in simData.values() if type(it) == dict], key=lambda d: d['rare'] / d['trare'])[-1]
-        simData = openOnePack(simData, foo['key'])
+        sordBy = 'rare'
       elif sum([it['epic'] for it in simData.values() if type(it) == dict]):
-        foo = sorted([it for it in simData.values() if type(it) == dict], key=lambda d: d['epic'] / d['tepic'])[-1]
-        simData = openOnePack(simData, foo['key'])
+        sordBy = 'epic'
       elif sum([it['legendary'] for it in simData.values() if type(it) == dict]):
-        foo = sorted([it for it in simData.values() if type(it) == dict], key=lambda d: d['legendary'] / d['tlegendary'])[-1]
-        simData = openOnePack(simData, foo['key'])
+        sordBy = 'legendary'
       else:
         print("WTF!!" + str(opens))
+      foo = sorted([it for it in simData.values() if type(it) == dict], key=lambda d: d[sordBy] / d['t' + sordBy])[-1]
+      simData = openOnePack(simData, foo['key'])
       opens += 1
     avg.append(opens)
   a = sum(avg) / len(avg)
   print('OPEN ALL 4 -> ' + str(a) + ' MIN: ' + str(min(avg)) + ' MAX: ' + str(max(avg)))
 
+def ifOpenPack(data, key, times):
+  simData = deepcopy(data)
+  for i in range(times): 
+    simData = openOnePack(simData, key)
+  printData(simData)
+
 
 if __name__ == '__main__':
   init() # use color console
-  data = readExcel()
+  # wxy dust
+  havedust = 8300 + 1570 
+  # chicken dust
+  #havedust = 0
+  data = readExcel(havedust)
+
+  # if open 60 pack
+  # ifOpenPack(data, 'tgt', 3)
+
+  
   printData(data)
-  t = 100
+  t = 1000
   """
   simOpenPack(data, 'cls', t)
   simOpenPack(data, 'gvg', t)
