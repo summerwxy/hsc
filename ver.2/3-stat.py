@@ -215,9 +215,11 @@ def simOpenAll_4(data, times):
   print('OPEN ALL 4 -> ' + str(a) + ' MIN: ' + str(min(avg)) + ' MAX: ' + str(max(avg)))
 
 def ifOpenPack(data, key, times):
+
   simData = deepcopy(data)
   for i in range(times): 
     simData = openOnePack(simData, key)
+  print(">>>>>>>>>>>>>> after %s packs <<<<<<<<<<<<<" % (times))
   printData(simData)
 
 
@@ -226,15 +228,15 @@ if __name__ == '__main__':
   # wxy dust
   havedust = 8300 + 1570 
   # chicken dust
-  #havedust = 0
+  # havedust = 45 + 20
   data = readExcel(havedust)
 
   # if open 60 pack
-  # ifOpenPack(data, 'tgt', 3)
+  #ifOpenPack(data, 'cls', 12)
 
   
   printData(data)
-  t = 1000
+  t = 100
   """
   simOpenPack(data, 'cls', t)
   simOpenPack(data, 'gvg', t)
