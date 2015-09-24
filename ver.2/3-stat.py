@@ -228,14 +228,14 @@ if __name__ == '__main__':
   # wxy dust
   havedust = 8300 + 1570 
   # chicken dust
-  # havedust = 45 + 20
+  #havedust = 45 + 20
   data = readExcel(havedust)
 
   # if open 60 pack
-  #ifOpenPack(data, 'cls', 12)
+  ifOpenPack(data, 'tgt', 10)
 
   
-  printData(data)
+  #printData(data)
   t = 100
   """
   simOpenPack(data, 'cls', t)
@@ -248,6 +248,6 @@ if __name__ == '__main__':
   simOpenAll_2(data, t)
   simOpenAll_3(data, t)
   """
-  simOpenAll_4(data, t)
+  #simOpenAll_4(data, t)
 
 
