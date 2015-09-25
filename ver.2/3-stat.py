@@ -232,7 +232,7 @@ if __name__ == '__main__':
   data = readExcel(havedust)
 
   # if open 60 pack
-  ifOpenPack(data, 'tgt', 10)
+  ifOpenPack(data, 'tgt', 0)
 
   
   #printData(data)
