@@ -25,7 +25,6 @@ def getDecks(url):
     deck['name'] = a.text.strip()
     deck['url'] = 'http://www.hearthpwn.com' + a.get('href')
     arena = items[i].get('class').find('t-arena-cell') != -1 and True or False
-    print(arena)
     i = i + 1
     # Deck Type
     deck['type'] = items[i].text.strip()
@@ -54,7 +53,6 @@ def getDecks(url):
     # if arena deck pass
     if not arena:
       decks.append(deck)
-      print(deck)
   return decks
 
 
