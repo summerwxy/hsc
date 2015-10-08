@@ -232,11 +232,11 @@ if __name__ == '__main__':
   data = readExcel(havedust)
 
   # if open 60 pack
-  #ifOpenPack(data, 'tgt', 10)
+  ifOpenPack(data, 'cls', 0)
 
   
-  printData(data)
-  t = 100
+  #printData(data)
+  #t = 100
   """
   simOpenPack(data, 'cls', t)
   simOpenPack(data, 'gvg', t)
@@ -248,6 +248,6 @@ if __name__ == '__main__':
   simOpenAll_2(data, t)
   simOpenAll_3(data, t)
   """
-  simOpenAll_4(data, t)
+  #simOpenAll_4(data, t)
 
 
