@@ -226,17 +226,17 @@ def ifOpenPack(data, key, times):
 if __name__ == '__main__':
   init() # use color console
   # wxy dust
-  havedust = 8300 + 1570 
+  havedust = 9445 + 1575
   # chicken dust
   #havedust = 45 + 20
   data = readExcel(havedust)
 
   # if open 60 pack
-  ifOpenPack(data, 'cls', 0)
+  #ifOpenPack(data, 'cls', 0)
 
   
-  #printData(data)
-  #t = 100
+  printData(data)
+  t = 100
   """
   simOpenPack(data, 'cls', t)
   simOpenPack(data, 'gvg', t)
@@ -248,6 +248,6 @@ if __name__ == '__main__':
   simOpenAll_2(data, t)
   simOpenAll_3(data, t)
   """
-  #simOpenAll_4(data, t)
+  simOpenAll_4(data, t)
 
 
