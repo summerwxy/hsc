@@ -3,144 +3,9 @@
 import re
 import xlsxwriter
 from xml.dom import minidom
-
-
 import io  
 import sys  
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf8') #改变标准输出的默认编码  
-
-
-hearthstonePath = "D:\misc\Hearthstone" # end without \
-
-# copy from https://github.com/Sembiance/hearthstonejson/blob/master/generate.js
-USED_TAGS = ["CardID", "CardName", "CardSet", "CardType", "Faction", "Rarity", "Cost", "Atk", "Health", "Durability", "CardTextInHand", "CardTextInPlay", "FlavorText", "ArtistName", "Collectible", "Elite", "Race", "Class", "HowToGetThisCard", "HowToGetThisGoldCard"]
-IGNORED_TAGS = ["AttackVisualType", "EnchantmentBirthVisual", "EnchantmentIdleVisual", "TargetingArrowText", "DevState", "TriggerVisual", "Recall", "AIMustPlay", "InvisibleDeathrattle"]
-MECHANIC_TAGS = ["Windfury", "Combo", "Secret", "Battlecry", "Deathrattle", "Taunt", "Stealth", "Spellpower", "Enrage", "Freeze", "Charge", "Overload", "Divine Shield", "Silence", "Morph", "OneTurnEffect", "Poisonous", "Aura", "AdjacentBuff", "HealTarget", "GrantCharge", "ImmuneToSpellpower", "AffectedBySpellPower", "Summoned"]
-ENUMID_TO_NAME = {
-	185 : "CardName",
-	183 : "CardSet",
-	202 : "CardType",
-	201 : "Faction",
-	199 : "Class",
-	203 : "Rarity",
-	48 : "Cost",
-	251 : "AttackVisualType",
-	184 : "CardTextInHand",
-	47 : "Atk",
-	45 : "Health",
-	321 : "Collectible",
-	342 : "ArtistName",
-	351 : "FlavorText",
-	32 : "TriggerVisual",
-	330 : "EnchantmentBirthVisual",
-	331 : "EnchantmentIdleVisual",
-	268 : "DevState",
-	365 : "HowToGetThisGoldCard",
-	190 : "Taunt",
-	364 : "HowToGetThisCard",
-	338 : "OneTurnEffect",
-	293 : "Morph",
-	208 : "Freeze",
-	252 : "CardTextInPlay",
-	325 : "TargetingArrowText",
-	189 : "Windfury",
-	218 : "Battlecry",
-	200 : "Race",
-	192 : "Spellpower",
-	187 : "Durability",
-	197 : "Charge",
-	362 : "Aura",
-	361 : "HealTarget",
-	349 : "ImmuneToSpellpower",
-	194 : "Divine Shield",
-	350 : "AdjacentBuff",
-	217 : "Deathrattle",
-	191 : "Stealth",
-	220 : "Combo",
-	339 : "Silence",
-	212 : "Enrage",
-	370 : "AffectedBySpellPower",
-	240 : "Cant Be Damaged",
-	114 : "Elite",
-	219 : "Secret",
-	363 : "Poisonous",
-	215 : "Recall",
-	340 : "Counter",
-	205 : "Summoned",
-	367 : "AIMustPlay",
-	335 : "InvisibleDeathrattle",
-	377 : "UKNOWN_HasOnDrawEffect",
-	388 : "SparePart",
-	389 : "UNKNOWN_DuneMaulShaman",
-	380 : "UNKNOWN_Blackrock_Heroes",
-	402 : "UNKNOWN_Intense_Gaze",
-	401 : "UNKNOWN_BroodAffliction"
-}
-
-BOOLEAN_TYPES = ["Collectible", "Elite"];
-IGNORED_TAG_NAMES = ["text", "MasterPower", "Power", "TriggeredPowerHistoryInfo", "EntourageCard"]
-
-TAG_VALUE_MAPS = {
-	"CardSet" : {
-    0 : None,
-		2 : "Basic",
-		3 : "Classic",
-		4 : "Reward",
-		5 : "Missions",
-		7 : "System",
-		8 : "Debug",
-		11 : "Promotion",
-		12 : "Curse of Naxxramas",
-		13 : "Goblins vs Gnomes",
-		14 : "Blackrock Mountain",
-    15 : "The Grand Tournament",
-    # new cards edit here
-		16 : "Credits",
-		17 : "Hero Skins",
-		18 : "Tavern Brawl"
-	}, "CardType" : {
-    0 : None,
-		3 : "Hero",
-		4 : "Minion",
-		5 : "Spell",
-		6 : "Enchantment",
-		7 : "Weapon",
-		10 : "Hero Power"
-	}, "Faction" : {
-    0 : None,
-		1 : "Horde",
-		2 : "Alliance",
-		3 : "Neutral"
-	}, "Rarity" : {
-		0 : None,
-		1 : "Common",
-		2 : "Free",
-		3 : "Rare",
-		4 : "Epic",
-		5 : "Legendary"
-	}, "Race" : {
-    0 : None,
-		14 : "Murloc",
-		15 : "Demon",
-		20 : "Beast",
-		21 : "Totem",
-		23 : "Pirate",
-		24 : "Dragon",
-		17 : "Mech"
-	}, "Class" : {
-		0 : None,
-		2 : "Druid",
-		3 : "Hunter",
-		4 : "Mage",
-		5 : "Paladin",
-		6 : "Priest",
-		7 : "Rogue",
-		8 : "Shaman",
-		9 : "Warlock",
-		10 : "Warrior",
-		11 : "Dream"
-	}
-}
 
 token = ['FP1_006', 'CS2_050', 'CS2_051', 'CS2_052', 'CS2_082', 'CS2_boar', 'CS2_mirror', 'CS2_tk1', 'GAME_002', 'GAME_005', 'GAME_006', 'hexfrog', 'NEW1_009', 'NEW1_032', 'NEW1_033', 'NEW1_034', 'skele11', 'PlaceholderCard', 'CS2_152', 'ds1_whelptoken', 'EX1_165t1', 'EX1_165t2', 'EX1_323w', 'EX1_tk11', 'EX1_tk28', 'EX1_tk29', 'EX1_tk34', 'EX1_tk9', 'skele21', 'Mekka1', 'Mekka2', 'Mekka3', 'Mekka4', 'Mekka4t', 'PRO_001at', 'EX1_finkle', 'EX1_598', 'AT_132_ROGUEt', 'AT_132_SHAMANa', 'AT_132_SHAMANb', 'AT_132_SHAMANc', 'AT_132_SHAMANd']
 
@@ -409,7 +274,7 @@ def parseXmlFiles():
 
   worksheet = workbook.add_worksheet()
   
-  title = ['dust', 'total', 'total', 'have', 'have', 'need', 'need', 'wish', 'wish', 'id', 'name', 'mp', 'atk', 'hp', 'set', 'type', 'rarity', 'class', 'race', 'effect', 'desc', '', 'get', 'getcold']
+  title = ['dust', 'total', 'total', 'have', 'have', 'need', 'need', 'wish', 'wish', 'id', 'ename', 'name', 'mp', 'atk', 'hp', 'set', 'type', 'rarity', 'class', 'race', 'effect']
   for i in range(len(title)):
     worksheet.write(0, i, title[i])
 
@@ -484,198 +349,27 @@ def parseXmlFiles():
     worksheet.write(i, 6, (dust == '' and [''] or [dust * need])[0])
     # TODO: wish column
     worksheet.write(i, 9, cid)
-    worksheet.write(i, 10, card['Name'])
-    worksheet.write(i, 11, card['Cost'])
-    worksheet.write(i, 12, card['Attack'])
-    worksheet.write(i, 13, card['Health'] or card['Durability'])
-    worksheet.write(i, 14, cmap.get(cset) or cset)
-    worksheet.write(i, 15, cmap.get(ctype) or ctype)
-    worksheet.write(i, 16, cmap.get(crarity) or crarity)
-    worksheet.write(i, 17, cmap.get(cclass) or cclass)
-    worksheet.write(i, 18, cmap.get(crace) or crace)
-    worksheet.write(i, 19, card['Text'])
-    worksheet.write(i, 20, card['Faction'])
-    worksheet.write(i, 21, "------")
-    """
-    worksheet.write(i, 22, getTagValue(card, "HowToGetThisCard"))
-    worksheet.write(i, 23, getTagValue(card, "HowToGetThisGoldCard"))
-    worksheet.write(i, 24, getTagValue(card, "Faction"))
-    worksheet.write(i, 25, getTagValue(card, "CardTextInPlay"))
-    worksheet.write(i, 26, getTagValue(card, "ArtistName"))
-    worksheet.write(i, 27, getTagValue(card, "Collectible"))
-    worksheet.write(i, 28, getTagValue(card, "Elite"))
-    worksheet.write(i, 29, edict.get(cid)) 
-    """
+    worksheet.write(i, 10, edict[k]['Name'])
+    worksheet.write(i, 11, card['Name'])
+    worksheet.write(i, 12, card['Cost'])
+    worksheet.write(i, 13, card['Attack'])
+    worksheet.write(i, 14, card['Health'] or card['Durability'])
+    worksheet.write(i, 15, cmap.get(cset) or cset)
+    worksheet.write(i, 16, cmap.get(ctype) or ctype)
+    worksheet.write(i, 17, cmap.get(crarity) or crarity)
+    worksheet.write(i, 18, cmap.get(cclass) or cclass)
+    worksheet.write(i, 19, cmap.get(crace) or crace)
+    worksheet.write(i, 20, card['Text'])
     worksheet.set_row(i, 13.5, format)
 
     i += 1
 
-  ws = [5, 3, 5, 3, 5, 3, 5, 3, 5, 10, 22, 3, 3, 3, 5, 5, 5.5, 5, 5, 40, 40]
+  ws = [5, 3, 5, 3, 5, 3, 5, 3, 5, 10, 22, 22, 3, 3, 3, 5, 5, 5.5, 5, 5, 60]
   for i in range(len(ws)):
     worksheet.set_column(i, i, ws[i])
 
-  worksheet.autofilter('A1:AB1')
+  worksheet.autofilter('A1:U1')
   workbook.close()
-
-  
-
-
-def getEnameDict():
-  foo = {}
-  txtPath = "%s\Data\Win\cardxml0\CAB-cardxml0\TextAsset" % (hearthstonePath) 
-  doc = minidom.parse("%s\enUS.txt" % (txtPath))
-  root = doc.documentElement
-  cards = root.getElementsByTagName("Entity")
-  for card in cards:
-    foo[card.getAttribute('CardID')] = getTagValue(card, "CardName")
-  return foo
-
-# parse *.txt to xlsx
-def parseTxtFiles():
-  edict = getEnameDict()
-
-  txtPath = "%s\Data\Win\cardxml0\CAB-cardxml0\TextAsset" % (hearthstonePath) 
-  doc = minidom.parse("%s\zhTW.txt" % (txtPath))
-  root = doc.documentElement
-  cards = root.getElementsByTagName("Entity")
-  
-  workbook = xlsxwriter.Workbook('cards-result.xlsx')
-
-  header = workbook.add_format({'bg_color': '#000000', 'font_color': '#ffffff', 'bold': True, 'border': 1})
-  black = workbook.add_format({'bg_color': '#5a5a5a', 'border': 1})
-  basic = workbook.add_format({'bg_color': '#d7e4bc', 'border': 1})
-  green = workbook.add_format({'bg_color': '#c2d69a', 'border': 1})
-  orange = workbook.add_format({'bg_color': '#fcd5b4', 'border': 1})
-  blue = workbook.add_format({'bg_color': '#b6dde8', 'border': 1})
-  red = workbook.add_format({'bg_color': '#e6b9b8', 'border': 1})
-  white = workbook.add_format({'bg_color': '#ffffff', 'border': 1})
-
-  worksheet = workbook.add_worksheet()
-  
-  title = ['dust', 'total', 'total', 'have', 'have', 'need', 'need', 'wish', 'wish', 'id', 'name', 'mp', 'atk', 'hp', 'set', 'type', 'rarity', 'class', 'race', 'effect', 'desc', '', 'get', 'getcold']
-  for i in range(len(title)):
-    worksheet.write(0, i, title[i])
-
-  i = 1
-  for card in cards:
-    cid = card.getAttribute('CardID')
-    cset = getTagValue(card, "CardSet")
-    ctype = getTagValue(card, "CardType")
-    crarity = getTagValue(card, "Rarity")
-    cclass = getTagValue(card, "Class")
-    crace = getTagValue(card, "Race")
-
-    dust = 0
-    total = 2
-    have = 0
-    if crarity == 'Legendary':
-      dust = 1600
-      total = 1
-    elif crarity == 'Epic':
-      dust = 400
-    elif crarity == 'Rare':
-      dust = 100
-    elif crarity == 'Common':
-      dust = 40
-
-    # about color
-    format = white
-    if ctype in ['Enchantment', 'Hero Power', 'Hero'] \
-        or cset in ['Credits', 'Tavern Brawl', 'Missions', 'Debug'] \
-        or cclass in ['Dream'] \
-        or cid in token \
-        or (re.match(".+_\d{3}t$", cid) and not cid in ['AT_063t']) \
-        or re.match(".+_\d{3}t2$", cid) \
-        or re.match(".+_\d{3}a$", cid) \
-        or re.match(".+_\d{3}b$", cid) \
-        or re.match(".+_\d{3}c$", cid) \
-        or cid.startswith("PART_") \
-        or cid.startswith("NAX") \
-        or cid.startswith("BRMA"):
-      format = black
-      dust = ''
-      total = ''
-      have = ''
-    elif cset == 'Basic':
-      format = basic
-      dust = ''
-      have = total
-    elif cid in pack:
-      format = green
-      have = total
-    elif cset in ['Curse of Naxxramas', 'Blackrock Mountain']:
-      format = green
-      dust = ''
-      have = total
-    elif crarity == 'Legendary':
-      format = orange
-    elif my.get(cid) and my.get(cid).get('h') == 1:
-      format = blue
-      have = 1
-    elif my.get(cid) and my.get(cid).get('h') == 0:
-      format = red
-
-
-    worksheet.write(i, 0, dust)
-    worksheet.write(i, 1, total)
-    worksheet.write(i, 2, total and total * dust)
-    worksheet.write(i, 3, have)
-    worksheet.write(i, 4, have and have * dust)
-    need =(total == '' and [''] or [int(total) - int(have)])[0]
-    worksheet.write(i, 5, need)
-    worksheet.write(i, 6, (dust == '' and [''] or [dust * need])[0])
-    # TODO: wish column
-    worksheet.write(i, 9, cid)
-    worksheet.write(i, 10, getTagValue(card, "CardName"))
-    worksheet.write(i, 11, getTagValue(card, "Cost"))
-    worksheet.write(i, 12, getTagValue(card, "Atk"))
-    worksheet.write(i, 13, getTagValue(card, "Health") or getTagValue(card, "Durability"))
-    worksheet.write(i, 14, cmap.get(cset) or cset)
-    worksheet.write(i, 15, cmap.get(ctype) or ctype)
-    worksheet.write(i, 16, cmap.get(crarity) or crarity)
-    worksheet.write(i, 17, cmap.get(cclass) or cclass)
-    worksheet.write(i, 18, cmap.get(crace) or crace)
-    worksheet.write(i, 19, remove_tags(getTagValue(card, "CardTextInHand")))
-    worksheet.write(i, 20, remove_tags(getTagValue(card, "FlavorText")))
-    worksheet.write(i, 21, "------")
-    worksheet.write(i, 22, getTagValue(card, "HowToGetThisCard"))
-    worksheet.write(i, 23, getTagValue(card, "HowToGetThisGoldCard"))
-    worksheet.write(i, 24, getTagValue(card, "Faction"))
-    worksheet.write(i, 25, getTagValue(card, "CardTextInPlay"))
-    worksheet.write(i, 26, getTagValue(card, "ArtistName"))
-    worksheet.write(i, 27, getTagValue(card, "Collectible"))
-    worksheet.write(i, 28, getTagValue(card, "Elite"))
-    worksheet.write(i, 29, edict.get(cid)) 
-
-    worksheet.set_row(i, 13.5, format)
-
-    i += 1
-
-  ws = [5, 3, 5, 3, 5, 3, 5, 3, 5, 10, 22, 3, 3, 3, 5, 5, 5.5, 5, 5, 40, 40]
-  for i in range(len(ws)):
-    worksheet.set_column(i, i, ws[i])
-
-  worksheet.autofilter('A1:AB1')
-  workbook.close()
-
-
-def getTagValue(card, tagName):
-  result = ""
-  key = [key for key, value in ENUMID_TO_NAME.items() if value == tagName][0]
-  for tag in card.getElementsByTagName("Tag"):
-    if tag.getAttribute("enumID") == str(key):
-      if tag.getAttribute("type") == "String":
-        result = tag.childNodes[0].nodeValue
-      elif tag.getAttribute("type") == "":
-        result = tag.getAttribute("value")
-      else:
-        print("wtf!!")
-      break
-
-  if TAG_VALUE_MAPS.get(tagName):
-    foo = TAG_VALUE_MAPS.get(tagName)
-    result = foo.get(int(result or 0))
-  return result or ""
 
 def getCardValue(card, key):
   result = None
@@ -702,7 +396,6 @@ def remove_tags(text):
 
 if __name__ == '__main__':
   parseXmlFiles()
-  #parseTxtFiles()
 
 # card dust
 # http://tinyurl.com/ovmmvrk
