@@ -23,8 +23,8 @@ def readExcel(havedust):
 
   kv = {u'傳說': 'legendary', u'史詩': 'epic', u'精良': 'rare', u'普通': 'common', u'基本': 'basic', None: 'basic'}
   for row in ws.rows:
-    source = row[14].value
-    level = row[16].value
+    source = row[15].value
+    level = row[17].value
     if source in sorted(PACK_NAME.values()) and row[1].value:
       key = [k for k, v in PACK_NAME.items() if v == source][0]
       if not source in data:
