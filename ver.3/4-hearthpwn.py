@@ -85,9 +85,9 @@ def getMyCards():
   wb = load_workbook(filename='cards-result.xlsx')
   ws = wb['Sheet1']
   for row in ws.rows:
-    name = row[29].value
+    name = row[10].value
     have = row[3].value
-    cname = row[10].value
+    cname = row[11].value
     if have != None:
       cards[name] = {'have': have, 'cname': cname}
   return cards
