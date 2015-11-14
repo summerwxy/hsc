@@ -204,6 +204,7 @@ cmap = {
   'Curse of Naxxramas': 'Naxx',
   'Goblins vs Gnomes': 'GVG',
   'The Grand Tournament': 'TGT',
+  'League of Explorers': 'LOE',
   # new cards edit here
   'Minion': '手下',
   'Spell': '法術',
