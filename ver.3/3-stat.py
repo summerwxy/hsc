@@ -47,7 +47,7 @@ def printData(data):
     foo = data[it]
     alldust = alldust + foo['need_dust']
     print('%s: %s/%s(%s%%) Cards | %s/%s(%s%%) Dusts' % (it, foo['need'], foo['total'], round(foo['need'] * 100 / foo['total'], 2), foo['need_dust'], foo['total_dust'], round(foo['need_dust'] * 100 / foo['total_dust'], 2)))
-    print('\033[0;33mLegendary %s/%s\033[m | \033[1;35mEpic %s/%s(%s)\033[m | \033[1;36mRare %s/%s(%s)\033[m | \033[1;37mCommon %s/%s(%s)\033[m' % (foo['legendary'], foo['tlegendary'], foo['epic'], foo['tepic'], round(foo['epic'] * 100 / foo['tepic'], 2), foo['rare'], foo['trare'], round(foo['rare'] * 100 / foo['trare'], 2), foo['common'], foo['tcommon'], round(foo['common'] * 100 / foo['tcommon'], 2)))
+    print('\033[0;33mLegendary %s/%s-%s\033[m | \033[1;35mEpic %s/%s-%s\033[m | \033[1;36mRare %s/%s-%s\033[m | \033[1;37mCommon %s/%s-%s\033[m' % (foo['legendary'], foo['tlegendary'], round(foo['legendary'] * 100 / foo['tlegendary'], 2), foo['epic'], foo['tepic'], round(foo['epic'] * 100 / foo['tepic'], 2), foo['rare'], foo['trare'], round(foo['rare'] * 100 / foo['trare'], 2), foo['common'], foo['tcommon'], round(foo['common'] * 100 / foo['tcommon'], 2)))
 
   print('\033[1;31m-------------------------------------------\033[m')
   print("DUST ALL: %s / HAVE: %s / NEED: %s" % (alldust, data['havedust'], alldust - data['havedust']))
