@@ -228,7 +228,7 @@ if __name__ == '__main__':
   # wxy dust
   havedust = 9445 + 1575
   # chicken dust
-  #havedust = 45 + 20
+  havedust = 205 + 70
   data = readExcel(havedust)
 
   # if open 60 pack
