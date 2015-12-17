@@ -7,7 +7,11 @@ import io
 import sys  
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf8') #改变标准输出的默认编码  
 
-token = ['FP1_006', 'CS2_050', 'CS2_051', 'CS2_052', 'CS2_082', 'CS2_boar', 'CS2_mirror', 'CS2_tk1', 'GAME_002', 'GAME_005', 'GAME_006', 'hexfrog', 'NEW1_009', 'NEW1_032', 'NEW1_033', 'NEW1_034', 'skele11', 'PlaceholderCard', 'CS2_152', 'ds1_whelptoken', 'EX1_165t1', 'EX1_165t2', 'EX1_323w', 'EX1_tk11', 'EX1_tk28', 'EX1_tk29', 'EX1_tk34', 'EX1_tk9', 'skele21', 'Mekka1', 'Mekka2', 'Mekka3', 'Mekka4', 'Mekka4t', 'PRO_001at', 'EX1_finkle', 'EX1_598', 'AT_132_ROGUEt', 'AT_132_SHAMANa', 'AT_132_SHAMANb', 'AT_132_SHAMANc', 'AT_132_SHAMANd']
+token = ['FP1_006', 'CS2_050', 'CS2_051', 'CS2_052', 'CS2_082', 'CS2_boar', 'CS2_mirror', 'CS2_tk1', 'GAME_002', 'GAME_005', 'GAME_006', 'hexfrog', 'NEW1_009', 'NEW1_032', 'NEW1_033', 'NEW1_034', 'skele11', 'PlaceholderCard', 'CS2_152', 'ds1_whelptoken', 'EX1_165t1', 'EX1_165t2', 'EX1_323w', 'EX1_tk11', 'EX1_tk28', 'EX1_tk29', 'EX1_tk34', 'EX1_tk9', 'skele21', 'Mekka1', 'Mekka2', 'Mekka3', 'Mekka4', 'Mekka4t', 'PRO_001at', 'EX1_finkle', 'EX1_598'
+    , 'AT_132_ROGUEt', 'AT_132_SHAMANa', 'AT_132_SHAMANb', 'AT_132_SHAMANc', 'AT_132_SHAMANd'
+    , 'LOE_008', 'LOE_008H', 'LOE_030'
+    ]
+
 
 # in pack
 pack = [
@@ -312,11 +316,13 @@ def parseXmlFiles():
         or cid in token \
         or (re.match(".+_\d{3}t$", cid) and not cid in ['AT_063t']) \
         or re.match(".+_\d{3}t2$", cid) \
+        or re.match(".+_\d{3}t3$", cid) \
         or re.match(".+_\d{3}a$", cid) \
         or re.match(".+_\d{3}b$", cid) \
         or re.match(".+_\d{3}c$", cid) \
         or cid.startswith("PART_") \
         or cid.startswith("NAX") \
+        or cid.startswith("LOEA") \
         or cid.startswith("BRMA"):
       format = black
       dust = ''
@@ -329,7 +335,7 @@ def parseXmlFiles():
     elif cid in pack:
       format = green
       have = total
-    elif cset in ['Curse of Naxxramas', 'Blackrock Mountain']:
+    elif cset in ['Curse of Naxxramas', 'Blackrock Mountain', 'League of Explorers']:
       format = green
       dust = ''
       have = total
