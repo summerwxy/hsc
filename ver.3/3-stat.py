@@ -226,7 +226,7 @@ def ifOpenPack(data, key, times):
 if __name__ == '__main__':
   init() # use color console
   # wxy dust
-  havedust = 10365 + 1605
+  havedust = 10545 + 1610
   # chicken dust
   havedust = 210 + 70
   data = readExcel(havedust)
