@@ -7,6 +7,7 @@ from random import random
 from copy import deepcopy
 
 PACK_NAME = {'cls': u'經典', 'gvg': u'GVG', 'tgt': u'TGT'}
+PACK_NAME = {'cls': u'經典', 'tgt': u'TGT'} # 2016 改版 沒有 GVG
 
 # http://www.carddust.com/
 chanceLegendary = 0.0119;
@@ -246,8 +247,8 @@ if __name__ == '__main__':
   simOpenPackWithoutDust(data, 'tgt', t)
   simOpenAll_1(data, t)
   simOpenAll_2(data, t)
-  simOpenAll_3(data, t)
   """
+  simOpenAll_3(data, t)
   simOpenAll_4(data, t)
 
 
